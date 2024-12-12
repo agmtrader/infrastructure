@@ -4,7 +4,7 @@ services:
     container_name: ibkr-web-api
     image: ibkr-web-api:latest
     build:
-      context: ./ibkr-web-api
+      context: ../ibkr-web-api
       dockerfile: Dockerfile
     environment:
       IBKR_ACCOUNT_ID: "U1234567"
@@ -17,7 +17,7 @@ services:
     container_name: ibkr-gateway
     #image: ghcr.io/gnzsnz/ib-gateway:latest
     build:
-      context: ./ibkr-gateway/latest
+      context: ../ibkr-gateway/latest
       platforms:
         - "linux/arm64"
       tags:
