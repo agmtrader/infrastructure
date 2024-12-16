@@ -22,8 +22,6 @@ services:
       #  - "linux/arm64"
       tags:
         - "ibkr-gateway:latest"
-    env_file:
-      - ../ibkr-gateway/.env
     restart: always
     environment:
       TWS_USERID: ${TWS_USERID}
