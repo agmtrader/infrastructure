@@ -13,6 +13,8 @@ services:
       - "5056:5056"
 
   ibkr-gateway:
+    env_file:
+      - ../ibkr-gateway/.env
     image: gnzsnz/ib-gateway:latest
     container_name: ibkr-gateway
     #image: ghcr.io/gnzsnz/ib-gateway:latest
