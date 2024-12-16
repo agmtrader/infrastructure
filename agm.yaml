@@ -1,3 +1,4 @@
+name: agm
 services:
   agm-api:
     container_name: agm-api
