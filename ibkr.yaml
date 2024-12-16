@@ -13,18 +13,16 @@ services:
       - "5056:5056"
 
   ibkr-gateway:
-    env_file:
-      - ../ibkr-gateway/.env
-    image: gnzsnz/ib-gateway:latest
     container_name: ibkr-gateway
-    #image: ghcr.io/gnzsnz/ib-gateway:latest
+    image: ibkr-gateway:latest
     build:
       context: ../ibkr-gateway/latest
       platforms:
         - "linux/arm64"
       tags:
-        - "gnzsnz/ib-gateway:latest"
-        #- "ghcr.io/gnzsnz/ib-gateway:latest"
+        - "ibkr-gateway:latest"
+    env_file:
+      - ../ibkr-gateway/.env
     restart: always
     environment:
       TWS_USERID: ${TWS_USERID}
