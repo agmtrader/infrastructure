@@ -1,5 +1,6 @@
-name: agm-trader
+name: agmtrader
 services:
+
   ibkr-gateway:
     container_name: ibkr-gateway
     restart: always
@@ -46,6 +47,18 @@ services:
       - "4002:4004"
       - "5900:5900"
 
+  ibkr-web-api:
+    build: .
+    image: ibkr-web-api
+    container_name: ibkr-web-api
+    environment:
+      IBKR_ACCOUNT_ID: "U13313113"
+    ports:
+      - "5055:5055"
+      - "5056:5056"
+    volumes:
+      - ./webapp:/app/webapp
+
   agm-trader-socket:
     container_name: agm-trader-socket
     image: agm-trader-socket:latest
@@ -62,5 +75,46 @@ services:
     depends_on:
       - ibkr-gateway
 
+  agm-api:
+    container_name: agm-api
+    image: agm-api:latest
+    build:
+      context: ../agm-api
+      dockerfile: Dockerfile
+    env_file:
+      - ../agm-api/.env
+    restart: unless-stopped
+    volumes:
+      - api-db:/app/src/db
+      - api-cache:/app/cache
+    ports:
+      - '5000:5000'
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    networks:
+      - agm-net
+
+  agm-hub:
+    container_name: agm-hub
+    image: agm-hub:latest
+    depends_on:
+      - agm-api
+    build:
+      context: ../agm-hub
+      dockerfile: Dockerfile
+    env_file:
+      - ../agm-hub/.env
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    networks:
+      - agm-net
+
+volumes:
+  api-db:
+  api-cache:
+
 networks:
-  singularity-net:
+  agm-net:
+    driver: bridge
