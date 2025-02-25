@@ -1,15 +1,15 @@
 name: trader
 services:
-  ib-gateway:
-    container_name: ib-gateway
+  ibkr-gateway:
+    container_name: ibkr-gateway
     restart: always
     build:
       platforms:
-        - linux/arm64
+        - linux/amd64
       context: ../ibkr-gateway/latest
       tags:
-        - "ghcr.io/gnzsnz/ib-gateway:latest"
-    image: ghcr.io/gnzsnz/ib-gateway:latest
+        - "ibkr-gateway:latest"
+    image: ibkr-gateway:latest
     environment:
       TWS_USERID: ${TWS_USERID}
       TWS_PASSWORD: ${TWS_PASSWORD}
@@ -63,15 +63,9 @@ services:
     volumes:
       - auto-trader-db:/app/src/db
       - auto-trader-cache:/app/cache
-    networks:
-      - agm-net
     depends_on:
-      - ib-gateway
+      - ibkr-gateway
 
 volumes:
   auto-trader-db:
   auto-trader-cache:
-
-networks:
-  agm-net:
-    external: true
