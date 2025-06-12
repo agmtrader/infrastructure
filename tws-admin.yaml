@@ -1,14 +1,5 @@
-name: ibkr
+name: tws-admin
 services:
-  ibkr-trading-api:
-    build: 
-      context: ../ibkr-trading-api
-      dockerfile: Dockerfile
-    image: ibkr-trading-api
-    container_name: ibkr-trading-api
-    ports:
-      - "5055:5055"
-      - "5056:5056"
 
   ibkr-gateway:
     container_name: ibkr-gateway
@@ -58,3 +49,32 @@ services:
       - "4001:4003"
       - "4002:4004"
       - "5900:5900"
+    networks:
+      - tws-admin-net
+
+  tws-connector:
+    container_name: tws-connector
+    image: tws-connector:latest
+    build:
+      context: ../tws-connector
+      dockerfile: Dockerfile
+    env_file:
+      - ../tws-connector/.env
+    restart: always
+    ports:
+      - '4444:4444'
+    volumes:
+      - tws-connector-db:/app/src/db
+      - tws-connector-cache:/app/cache
+    depends_on:
+      - ibkr-gateway
+    networks:
+      - tws-admin-net
+
+networks:
+  tws-admin-net:
+    driver: bridge
+
+volumes:
+  tws-connector-db:
+  tws-connector-cache:

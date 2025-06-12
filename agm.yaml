@@ -1,5 +1,6 @@
 name: agm
 services:
+
   agm-api:
     container_name: agm-api
     image: agm-api:latest
@@ -33,24 +34,7 @@ services:
     networks:
       - agm-net
 
-  agm-trader:
-    container_name: agm-trader
-    image: agm-trader:latest
-    build:
-      context: ../agm-trader
-      dockerfile: Dockerfile
-    env_file:
-      - ../agm-trader/.env
-    restart: always
-    ports:
-      - '4444:4444'
-    volumes:
-      - agm-trader-db:/app/src/db
-      - agm-trader-cache:/app/cache
-
 volumes:
-  agm-trader-db:
-  agm-trader-cache:
   api-db:
   api-cache:
 
