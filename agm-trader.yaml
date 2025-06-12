@@ -1,20 +1,5 @@
 name: agm-trader
 services:
-  agm-trader:
-    container_name: agm-trader
-    image: agm-trader:latest
-    build:
-      context: ../agm-trader
-      dockerfile: Dockerfile
-    env_file:
-      - ../agm-trader/.env
-    restart: always
-    ports:
-      - '4444:4444'
-    volumes:
-      - agm-trader-db:/app/src/db
-      - agm-trader-cache:/app/cache
-
   ibkr-gateway:
     container_name: ibkr-gateway
     restart: always
@@ -63,6 +48,27 @@ services:
       - "4001:4003"
       - "4002:4004"
       - "5900:5900"
+    networks:
+      - agm-trader-net
+
+  agm-trader:
+    container_name: agm-trader
+    image: agm-trader:latest
+    build:
+      context: ../agm-trader
+      dockerfile: Dockerfile
+    env_file:
+      - ../agm-trader/.env
+    restart: always
+    ports:
+      - '4444:4444'
+    volumes:
+      - agm-trader-db:/app/src/db
+      - agm-trader-cache:/app/cache
+    networks:
+      - agm-trader-net
+    depends_on:
+      - ibkr-gateway
 
 networks:
   agm-trader-net:
