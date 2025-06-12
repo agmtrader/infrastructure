@@ -62,7 +62,7 @@ services:
       - ../tws-connector/.env
     restart: always
     ports:
-      - '4444:4444'
+      - '3333:3333'
     volumes:
       - tws-connector-db:/app/src/db
       - tws-connector-cache:/app/cache
