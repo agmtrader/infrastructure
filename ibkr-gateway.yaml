@@ -1,4 +1,4 @@
-name: tws-admin
+name: ibkr-gateway
 services:
 
   ibkr-gateway:
@@ -49,32 +49,3 @@ services:
       - "4001:4003"
       - "4002:4004"
       - "5900:5900"
-    networks:
-      - tws-admin-net
-
-  tws-connector:
-    container_name: tws-connector
-    image: tws-connector:latest
-    build:
-      context: ../tws-connector
-      dockerfile: Dockerfile
-    env_file:
-      - ../tws-connector/.env
-    restart: always
-    ports:
-      - '3333:3333'
-    volumes:
-      - tws-connector-db:/app/src/db
-      - tws-connector-cache:/app/cache
-    depends_on:
-      - ibkr-gateway
-    networks:
-      - tws-admin-net
-
-networks:
-  tws-admin-net:
-    driver: bridge
-
-volumes:
-  tws-connector-db:
-  tws-connector-cache:
